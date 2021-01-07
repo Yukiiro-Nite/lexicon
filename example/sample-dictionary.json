@@ -1,0 +1,65 @@
+{
+  "name": "Sample Dictionary",
+  "description": "A small sample dictionary that acts as an example of the dictionary format.",
+  "dictionary": {
+    "cat": [
+      {
+        "word": "cat",
+        "definition": "A small furry carnivorous mammal with 4 limbs and a tail.",
+        "tags": ["animal", "mammal", "carnivore"],
+        "relationships": [
+          {
+            "link": ["mouse", 0],
+            "description": "Cats eat mice."
+          },
+          {
+            "link": ["dog", 0],
+            "description": "Cats are sometimes afraid of dogs."
+          },
+          {
+            "link": ["animal", 0],
+            "description": "A cat is an animal."
+          }
+        ]
+      },
+      {
+        "word": "cat",
+        "definition": "A Unix command that prints the contents of a file to standard output.",
+        "tags": ["commands", "unix"],
+        "relationships": []
+      }
+    ],
+    "mouse": [
+      {
+        "word": "mouse",
+        "definition": "A tiny furry mammal that scurries around and enjoys cheese.",
+        "tags": ["animal", "mammal", "omnivore"],
+        "relationships": [
+          {
+            "link": ["cat", 0],
+            "description": "Mice are eaten by cats."
+          }
+        ]
+      },
+      {
+        "word": "mouse",
+        "definition": "A computer periphreal that allows a user to move a pointer on screen in 2 dimensions.",
+        "tags": ["periphreal"],
+        "relationships": []
+      }
+    ],
+    "dog": [
+      {
+        "word": "dog",
+        "definition": "A small furry mammal that barks and loves playing with humans.",
+        "tags": ["animal", "mammal", "omnivore"],
+        "relationships": [
+          {
+            "link": ["cat", 0],
+            "description": "Dogs occationally scare cats."
+          }
+        ]
+      }
+    ]
+  }
+}
