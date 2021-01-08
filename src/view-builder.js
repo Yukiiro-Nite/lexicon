@@ -27,19 +27,15 @@ function buildIndexPage (dictionarySchema) {
   <body>
     <h1 class="dictionary-name">${dictionarySchema.name}</h1>
     <p class="dictionary-description">${dictionarySchema.description}</p>
-    <details>
-      <summary>
-        <h2>Group by first letter</h2>
-      </summary>
+    <article>
+      <h2>Group by first letter</h2>
       ${buildGroupHTML(byLetter)}
-    </details>
+    </article>
 
-    <details>
-      <summary>
-        <h2>Group by tag</h2>
-      </summary>
+    <article>
+      <h2>Group by tag</h2>
       ${buildGroupHTML(byTag)}
-    </details>
+    </article>
   </body>
 </html>
 `
@@ -51,13 +47,24 @@ function toSafeName (name) {
 }
 
 function buildWordPage (word, entries, dictionaryName) {
+  const builtEntries = entries.map(buildEntry).join('\n')
+  const firstLetter = word.charAt(0).toLocaleUpperCase()
+
   return `<html>
   <head>
     <title>${dictionaryName} - ${word}</title>
   </head>
   <body>
-    ${word}
-    More coming soon!
+    <h1>${word}</h1>
+    <nav>
+      <ol>
+        <li><a href="index">Back to index</a></li>
+        <li><a href="index#group-${firstLetter}">Words that start with ${firstLetter}</a></li>
+      </ol>
+    </nav>
+    <ol>
+      ${builtEntries}
+    </ol>
   </body>
 </html>
 `
@@ -122,7 +129,7 @@ function buildGroup ([groupName, groupItems]) {
     .join('\n')
 
   return `<li>
-  <h3>${groupName}</h3>
+  <h3 id="group-${groupName}">${groupName}</h3>
   <ul>
     ${builtItems}
   </ul>
@@ -132,10 +139,47 @@ function buildGroup ([groupName, groupItems]) {
 function buildGroupItem (groupItem) {
   const { word, index } = groupItem
   if (index !== undefined) {
-    return `<li><a href="${word}#entry-${index}">${word}<sub>${index + 1}</sub></a></li>`
+    return `<li><a href="${word}#entry-${index + 1}">${word}<sub>${index + 1}</sub></a></li>`
   } else {
     return `<li><a href="${word}">${word}</a></li>`
   }
+}
+
+function buildEntry (entry, index) {
+  return `<li id="entry-${index + 1}">
+  <p class="definition">${entry.definition}</p>
+  ${buildTags(entry.tags)}
+  ${buildRelationships(entry.relationships)}
+</li>`
+}
+
+function buildTags (tags) {
+  if(!tags || !tags.length) return '';
+
+  const builtTags = tags
+    .map(tag => `<li><a href="index#group-${tag}">${tag}</a></li>`)
+    .join('\n')
+
+  return `<h3>Tags</h3>
+<ul class="tags">
+  ${builtTags}
+</ul>`
+}
+
+function buildRelationships (relationships) {
+  if(!relationships || !relationships.length) return '';
+
+  const builtRelationships = relationships
+    .map((relationship) => {
+      const [word, index] = relationship.link
+      return `<li><a href="${word}#entry-${index + 1}">${word} - ${relationship.description}</a></li>`
+    })
+    .join('\n')
+  
+  return `<h3>Relationships</h3>
+<ul class="relationships">
+  ${builtRelationships}
+</ul>`
 }
 
 
