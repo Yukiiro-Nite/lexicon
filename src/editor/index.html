@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Lexicon Editor</title>
+  </head>
+  <body>
+    <h1>Dictionary Editor</h1>
+    <section id="selectDictionary">
+      <h2>Edit an existing dictionary</h1>
+      <label>
+        <h3>Dictionary JSON</h3>
+        <input id="jsonFile" type="file" accept=".json" />
+      </label>
+      <h2>Create a new dictionary</h1>
+      <form id="createDictionaryForm">
+        <label>
+          <h3>Name</h3>
+          <input name="name" />
+        </label>
+       <label>
+         <h3>Description</h3>
+         <textarea name="description"></textarea>
+       </label>
+       <h3><button>Create</button></h3>
+      </form>
+    </section>
+
+    <script src="Editor.js"></script>
+    <script src="load-or-create-dict.js"></script>
+  </body>
+</html>
