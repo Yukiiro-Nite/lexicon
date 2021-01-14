@@ -46,6 +46,7 @@ function buildIndexPage (dictionarySchema, indexStyle) {
 function toSafeName (name) {
   // TODO: return a safe file / path / url name here...
   return name
+    .replace(/\//g, "_")
 }
 
 function buildWordPage (word, entries, dictionaryName, wordPageStyle) {
