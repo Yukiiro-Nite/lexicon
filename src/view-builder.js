@@ -10,7 +10,7 @@ function buildViewFiles (dictionarySchema, indexStyle = '', wordPageStyle = '') 
 function buildWordPages (dictionarySchema, wordPageStyle) {
   return Object.entries(dictionarySchema.dictionary)
     .map(([key, dictionaryEntries]) => ({
-      fileName: `${toSafeName(key)}.html`,
+      fileName: `words/${toSafeName(key)}.html`,
       content: buildWordPage(key, dictionaryEntries, dictionarySchema.name, wordPageStyle)
     }))
 }
@@ -64,8 +64,8 @@ function buildWordPage (word, entries, dictionaryName, wordPageStyle) {
     <h1>${word}</h1>
     <nav>
       <ol>
-        <li><a href="index.html">Back to index</a></li>
-        <li><a href="index.html#group-${firstLetter}">Words that start with ${firstLetter}</a></li>
+        <li><a href="../index.html">Back to index</a></li>
+        <li><a href="../index.html#group-${firstLetter}">Words that start with ${firstLetter}</a></li>
       </ol>
     </nav>
     <ol>
@@ -145,9 +145,9 @@ function buildGroup ([groupName, groupItems]) {
 function buildGroupItem (groupItem) {
   const { word, index } = groupItem
   if (index !== undefined) {
-    return `<li><a href="${word}.html#entry-${index + 1}">${word}<sub>${index + 1}</sub></a></li>`
+    return `<li><a href="words/${word}.html#entry-${index + 1}">${word}<sub>${index + 1}</sub></a></li>`
   } else {
-    return `<li><a href="${word}.html">${word}</a></li>`
+    return `<li><a href="words/${word}.html">${word}</a></li>`
   }
 }
 
@@ -163,7 +163,7 @@ function buildTags (tags) {
   if(!tags || !tags.length) return '';
 
   const builtTags = tags
-    .map(tag => `<li><a href="index.html#group-${tag}">${tag}</a></li>`)
+    .map(tag => `<li><a href="../index.html#group-${tag}">${tag}</a></li>`)
     .join('\n')
 
   return `<h3>Tags</h3>
@@ -256,6 +256,12 @@ if(require && module) {
       } else {
         verifiedOptions.outputPath = outputPath
       }
+    }
+
+    // make sure words directory exists
+    const wordsPath = path.join(verifiedOptions.outputPath, 'words')
+    if(!fs.existsSync(wordsPath)) {
+      fs.mkdirSync(wordsPath)
     }
 
     // process index style
